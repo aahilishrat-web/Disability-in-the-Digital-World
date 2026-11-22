@@ -1,0 +1,642 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Disability in the Digital World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+/* Layout: a single readable column (about 68ch) under a charcoal hero carrying the Disability Pride Flag band; case studies are figure + analysis cards; sticky section nav. */
+:root {
+  --bg: #f6f7f5;
+  --surface: #ffffff;
+  --ink: #1b2120;
+  --muted: #4a5551;
+  --line: #d3dad7;
+  --accent: #1b5c84;
+  --challenge: #1d7550;
+  --reinforce: #a1334a;
+  --mixed: #7a5a00;
+  --tag-bg: #eef2f0;
+  --hero-bg: #343938;
+  --hero-ink: #f5f5f0;
+  --hero-muted: #c9cfcc;
+  --flag-red: #cf7280;
+  --flag-gold: #eede77;
+  --flag-white: #e8e8e8;
+  --flag-blue: #7bc2e0;
+  --flag-green: #3aad7d;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Atkinson Hyperlegible", Verdana, "Segoe UI", system-ui, sans-serif;
+  --size: 1.0625rem;
+  --leading: 1.65;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131716; --surface: #1b2120; --ink: #e6ebe8; --muted: #a8b3ae; --line: #2e3734;
+    --accent: #8cc8e8; --challenge: #6fd1a0; --reinforce: #f08a9c; --mixed: #e6c45a; --tag-bg: #232b29;
+    --hero-bg: #262a29; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #131716; --surface: #1b2120; --ink: #e6ebe8; --muted: #a8b3ae; --line: #2e3734;
+  --accent: #8cc8e8; --challenge: #6fd1a0; --reinforce: #f08a9c; --mixed: #e6c45a; --tag-bg: #232b29;
+  --hero-bg: #262a29; color-scheme: dark;
+}
+html[data-size="lg"] { --size: 1.25rem; }
+html[data-size="xl"] { --size: 1.45rem; }
+html[data-spacing="wide"] { --leading: 2; }
+
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: var(--size); line-height: var(--leading); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--hero-bg); }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+h2 { font-size: clamp(1.7rem, 4vw, 2.3rem); font-weight: 800; }
+h3 { font-size: 1.35rem; font-weight: 600; }
+p { margin: 0; }
+.wrap { max-width: 46rem; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: 12px; top: -60px; background: var(--surface); color: var(--ink); padding: 10px 14px; border: 2px solid var(--accent); z-index: 50; }
+.skip:focus { top: calc(12px + env(safe-area-inset-top, 0px)); }
+
+/* Hero */
+.hero { background: var(--hero-bg); color: var(--hero-ink); margin-top: calc(-1 * env(safe-area-inset-top, 0px)); padding-top: calc(env(safe-area-inset-top, 0px) + 3rem); padding-bottom: 2.5rem; position: relative; overflow: hidden; }
+.flagband { position: absolute; inset: 0; pointer-events: none; opacity: .9;
+  background: linear-gradient(35deg, transparent 0 58%, var(--flag-red) 58% 60.5%, var(--flag-gold) 60.5% 63%, var(--flag-white) 63% 65.5%, var(--flag-blue) 65.5% 68%, var(--flag-green) 68% 70.5%, transparent 70.5%); }
+.hero .wrap { position: relative; display: grid; gap: 1.1rem; }
+.eyebrow { font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: var(--hero-muted); font-weight: 700; }
+.hero h1 { font-size: clamp(2.4rem, 8vw, 4.4rem); font-weight: 800; letter-spacing: -.01em; max-width: 12ch; }
+.hero .sub { font-size: 1.2rem; color: var(--hero-muted); max-width: 34ch; }
+.question { margin-top: .6rem; font-family: var(--display); font-weight: 600; font-size: clamp(1.25rem, 3.2vw, 1.6rem); line-height: 1.3; max-width: 28ch; border-left: 4px solid var(--flag-gold); padding-left: 1rem; }
+.flagnote { font-size: .9rem; color: var(--hero-muted); max-width: 52ch; }
+
+/* Toolbar + nav */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--surface); border-bottom: 1px solid var(--line); }
+.bar .wrap { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; align-items: center; justify-content: space-between; padding-block: .55rem; max-width: 60rem; }
+.bar nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .25rem .9rem; font-size: .92rem; }
+.bar nav a { color: var(--ink); text-decoration: none; font-weight: 700; }
+.bar nav a:hover { color: var(--accent); text-decoration: underline; }
+.reading { display: flex; gap: .4rem; align-items: center; font-size: .85rem; color: var(--muted); flex-wrap: wrap; }
+.reading button { font: inherit; font-weight: 700; color: var(--ink); background: var(--tag-bg); border: 1px solid var(--line); border-radius: 6px; padding: .25rem .6rem; cursor: pointer; min-height: 32px; }
+.reading button[aria-pressed="true"] { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+
+main section { padding-block: 3.25rem; border-bottom: 1px solid var(--line); }
+main section:last-child { border-bottom: 0; }
+.stack { display: grid; gap: 1.1rem; }
+.lede { font-size: 1.15em; }
+.plain { background: var(--tag-bg); border-left: 4px solid var(--accent); padding: .9rem 1.1rem; border-radius: 0 8px 8px 0; font-size: .95em; }
+.plain strong { display: block; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .2rem; }
+ul.points { margin: 0; padding-left: 1.25rem; display: grid; gap: .4rem; }
+
+/* Key terms */
+dl.terms { margin: 0; display: grid; gap: 1rem; }
+dl.terms div { border-top: 1px solid var(--line); padding-top: .8rem; display: grid; gap: .25rem; }
+dt { font-family: var(--display); font-weight: 600; font-size: 1.1rem; }
+dd { margin: 0; color: var(--ink); }
+.src { color: var(--muted); font-size: .9em; }
+
+/* Case studies */
+.case { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 1.4rem; display: grid; gap: 1rem; min-width: 0; }
+.case-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; align-items: baseline; }
+.case-num { font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.verdict { font-size: .8rem; font-weight: 700; padding: .2rem .6rem; border-radius: 999px; border: 1.5px solid currentColor; white-space: nowrap; }
+.v-challenge { color: var(--challenge); }
+.v-reinforce { color: var(--reinforce); }
+.v-mixed { color: var(--mixed); }
+figure { margin: 0; border: 1px dashed var(--line); border-radius: 10px; padding: 1rem; display: grid; gap: .6rem; background: var(--bg); }
+.media-meta { display: flex; flex-wrap: wrap; gap: .4rem .8rem; font-size: .88rem; color: var(--muted); align-items: center; }
+.platform { font-weight: 700; color: var(--ink); background: var(--tag-bg); border: 1px solid var(--line); padding: .05rem .5rem; border-radius: 5px; }
+.alt { font-size: .95em; }
+.alt b { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-right: .3rem; }
+figcaption { font-style: italic; color: var(--muted); font-size: .92em; }
+details { border-top: 1px solid var(--line); padding-top: .55rem; }
+summary { cursor: pointer; font-weight: 700; color: var(--accent); min-height: 32px; display: list-item; }
+details > div { padding-top: .6rem; display: grid; gap: .6rem; font-size: .95em; }
+.timecode { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--muted); }
+.tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+.tag { font-size: .82rem; background: var(--tag-bg); border: 1px solid var(--line); padding: .1rem .55rem; border-radius: 5px; }
+.tag.dj { border-color: var(--accent); color: var(--accent); font-weight: 700; }
+.analysis { display: grid; gap: .8rem; }
+.analysis h4 { margin: 0; font-family: var(--display); font-size: 1rem; font-weight: 600; }
+.ask { border-left: 3px solid var(--mixed); padding-left: .9rem; }
+.cases { display: grid; gap: 1.5rem; }
+
+/* DJ principles */
+ol.principles { margin: 0; padding: 0; list-style: none; counter-reset: p; display: grid; gap: .9rem; }
+ol.principles li { counter-increment: p; display: grid; grid-template-columns: 2.2rem 1fr; gap: .2rem .6rem; }
+ol.principles li::before { content: counter(p); font-family: var(--display); font-weight: 800; font-size: 1.3rem; color: var(--accent); font-variant-numeric: tabular-nums; grid-row: span 2; }
+ol.principles b { font-family: var(--display); font-weight: 600; }
+.table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; min-width: 34rem; font-size: .92em; background: var(--surface); }
+caption { text-align: left; padding: .8rem 1rem; font-weight: 700; color: var(--muted); }
+th, td { text-align: left; vertical-align: top; padding: .7rem 1rem; border-top: 1px solid var(--line); }
+thead th { font-family: var(--display); font-weight: 600; background: var(--tag-bg); }
+
+/* References */
+ol.refs { list-style: none; margin: 0; padding: 0; display: grid; gap: .9rem; }
+ol.refs li { padding-left: 2.5em; text-indent: -2.5em; overflow-wrap: anywhere; }
+.credits { display: grid; gap: .5rem; }
+.credits div { display: flex; flex-wrap: wrap; gap: .2rem .8rem; border-top: 1px solid var(--line); padding-top: .5rem; }
+.credits b { min-width: 12rem; }
+.top { display: inline-block; margin-top: 1rem; font-weight: 700; }
+footer { padding-block: 2rem 3rem; color: var(--muted); font-size: .9rem; }
+
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+@media (max-width: 34rem) { .case { padding: 1rem; } .credits b { min-width: 0; } }
+</style>
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+
+
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="hero" id="top">
+  <div class="flagband" aria-hidden="true"></div>
+  <div class="wrap">
+    <p class="eyebrow">A group webpage on disability and media</p>
+    <h1>Disability in the Digital World</h1>
+    <p class="sub">The perception and representation of disability on social media</p>
+    <p class="question">Does social media reinforce ableist assumptions about disability, or does it challenge them?</p>
+    <p class="flagnote">The diagonal stripes on this banner come from the Disability Pride Flag, designed by Ann Magill. Each color stands for a part of the disabled community, and the stripes run diagonally to show disabled people cutting across the barriers that separate them from the rest of society.</p>
+  </div>
+</header>
+
+<div class="bar">
+  <div class="wrap">
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="#intro">Introduction</a></li>
+        <li><a href="#terms">Key terms</a></li>
+        <li><a href="#self">Speaking for ourselves</a></li>
+        <li><a href="#ableism">Ableism in the feed</a></li>
+        <li><a href="#justice">Disability Justice</a></li>
+        <li><a href="#closing">Closing</a></li>
+        <li><a href="#access">Accessibility</a></li>
+        <li><a href="#refs">References</a></li>
+      </ul>
+    </nav>
+    <div class="reading" role="group" aria-label="Reading options">
+      <span>Text</span>
+      <button type="button" id="size-md" data-size="md" aria-pressed="true" aria-label="Normal text size">A</button>
+      <button type="button" id="size-lg" data-size="lg" aria-pressed="false" aria-label="Large text size">A+</button>
+      <button type="button" id="size-xl" data-size="xl" aria-pressed="false" aria-label="Extra large text size">A++</button>
+      <button type="button" id="spacing" aria-pressed="false">Wide spacing</button>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+
+<section id="intro" aria-labelledby="intro-h">
+  <div class="wrap stack">
+    <h2 id="intro-h">Introduction</h2>
+    <p class="plain"><strong>Plain language summary</strong>Social media shapes how people think about disability. Some posts let disabled people tell their own stories. Other posts use stereotypes or make jokes about disabled people. This page looks at both.</p>
+    <p class="lede">Social media has become one of the most influential ways people learn about and understand the world around them. Platforms such as TikTok, Instagram, and YouTube let individuals share experiences, educate others, and challenge perspectives. For people with disabilities, these platforms create chances to speak about their lives, push back on stereotypes, and show different perspectives on disability. Creators share their experiences with assistive technology, talk about daily life, and build communities.</p>
+    <p>Not all disability representation on social media is positive. Some content still relies on stereotypes, portrays disabled people as helpless, or treats everyday activities as inspirational simply because a disabled person is doing them. These portrayals affect how audiences understand disability and can feed ableist assumptions.</p>
+    <h3>What this page covers</h3>
+    <p>We look at both the positive and negative sides of disability representation on social media, especially how social media can:</p>
+    <ul class="points">
+      <li>Challenge stereotypes and change how people understand disability online</li>
+      <li>Promote disability pride, creativity, and self-expression</li>
+      <li>Show how assistive technology can support access and independence</li>
+      <li>Reinforce ableist ideas through harmful stereotypes or narrow representation</li>
+    </ul>
+    <p>We use Disability Studies, the critical lens for studying disability, and Disability Justice, a framework for collective liberation. We also use the medical, social, and affirmative models of disability to explain how disability is represented online and why those representations matter.</p>
+  </div>
+</section>
+
+<section id="terms" aria-labelledby="terms-h">
+  <div class="wrap stack">
+    <h2 id="terms-h">Key terms</h2>
+    <p class="plain"><strong>Plain language summary</strong>These are the ideas we use to study each post. The medical model says the problem is in the body. The social model says the problem is the barriers around the person. The affirmative model says disability can be a positive part of who someone is.</p>
+    <dl class="terms">
+      <div>
+        <dt>Medical model of disability</dt>
+        <dd>Treats disability as a problem inside a person's body or mind that a professional should diagnose, treat, or cure. Success means getting closer to "normal."</dd>
+        <dd class="src">Murza (2025) contrasts this model with the social model, especially for neurodivergent people.</dd>
+      </div>
+      <div>
+        <dt>Social model of disability</dt>
+        <dd>Separates impairment (a difference in the body or mind) from disability (the barriers a society builds around that difference). Stairs without a ramp disable a wheelchair user. Fixing the environment is the goal.</dd>
+        <dd class="src">Murza (2025); Parey et al. (2025) apply the social model alongside an ethics of care framework to families of people with lower-limb amputations.</dd>
+      </div>
+      <div>
+        <dt>Affirmative model of disability</dt>
+        <dd>Goes a step further than the social model and treats disability as a valid, sometimes positive, part of identity and community, rather than a tragedy.</dd>
+        <dd class="src">Swain &amp; French (2000).</dd>
+      </div>
+      <div>
+        <dt>Inspiration porn</dt>
+        <dd>Content that presents disabled people as inspiring simply for existing or doing ordinary things, mainly so nondisabled viewers can feel moved or feel better about their own lives.</dd>
+        <dd class="src">The term was popularized by disabled journalist and comedian Stella Young (2014).</dd>
+      </div>
+      <div>
+        <dt>Infantilization</dt>
+        <dd>Treating a disabled adult like a child: speaking for them, doing tasks for them without asking, or assuming they cannot know their own abilities.</dd>
+      </div>
+      <div>
+        <dt>Invisible disability</dt>
+        <dd>A disability that is not obvious to an onlooker, such as chronic pain, fatigue, heart conditions, or many neurological conditions. People with invisible disabilities are often accused of faking.</dd>
+      </div>
+      <div>
+        <dt>Ableism</dt>
+        <dd>Beliefs and practices that treat nondisabled bodies and minds as the standard and disabled people as lesser.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<section id="self" aria-labelledby="self-h">
+  <div class="wrap stack">
+    <h2 id="self-h">Part 1: Speaking for ourselves</h2>
+    <p class="plain"><strong>Plain language summary</strong>These four examples show disabled people, or the technology they use, in a positive way. Most of them are made by disabled people themselves. We also ask what each example leaves out.</p>
+    <p>The posts in this section are mostly created by or centered on disabled people talking about their own lives. They push back against tragedy and cure narratives. We still look at each one critically, since positive content can carry its own assumptions.</p>
+
+    <div class="cases">
+
+    <article class="case" id="case-ocampo" aria-labelledby="c1-h">
+      <div class="case-head">
+        <span class="case-num">Case study 1 · Student journalism</span>
+        <span class="verdict v-challenge">Challenges ableism</span>
+      </div>
+      <h3 id="c1-h">"My autism diagnosis is not a problem to be solved"</h3>
+      <figure>
+        <div class="media-meta"><span class="platform">The Shorthorn</span><span>Essay by C. Ocampo</span><a href="https://www.theshorthorn.com/opinion/community/essay-my-autism-diagnosis-is-not-a-problem-to-be-solved/article_2cda60ec-f464-4efb-b24d-9e2c41b5b2f5.html" target="_blank" rel="noopener">Read the essay<span class="sr"> (opens in a new tab)</span></a></div>
+        <p class="alt"><b>Alt text</b>A colorful illustration of a woman with blue and purple hair reaching toward a bright light. Golden, white, and blue rays shine across a dark background, surrounded by outlined butterflies.</p>
+        <figcaption>A woman reaching toward a bright light, surrounded by butterflies and radiant beams of color, symbolizing hope and empowerment.</figcaption>
+        <details>
+          <summary>Long image description</summary>
+          <div><p>A vibrant digital illustration shows a woman with green and blue skin tones and long, flowing blue and purple hair. She wears a loose white T-shirt and stretches one arm upward toward a bright yellow-white light in the upper-left corner. Golden, blue, and white rays extend from the light across a dark navy background. Several butterflies outlined in bright blue appear around her. She looks up toward the light with a focused expression. The bold colors and strong contrasts create a sense of hope, empowerment, and determination.</p></div>
+        </details>
+      </figure>
+      <div class="analysis">
+        <h4>Analysis</h4>
+        <p>The title alone rejects the medical model. A diagnosis is usually framed as the first step toward treatment or a cure. This essay frames the diagnosis as information about who the author is, which matches the affirmative model's view of disability as part of human diversity. Murza (2025) makes a similar case for neurodiversity-affirming practice, which plays to autistic people's strengths instead of trying to make them look less autistic.</p>
+        <p>The essay is also written by an autistic person, not about one. In a media landscape where autism is often explained by parents, doctors, or charities, the author speaking for themself is itself a form of representation.</p>
+        <p>The author's own accessibility plan for the essay includes screen-reader compatibility, alt text for photographs, adjustable font sizes, text-to-speech, high-contrast text, a plain-language summary, and a distraction-free reading mode for readers with cognitive disabilities or sensory sensitivities. This webpage borrows several of those ideas.</p>
+      </div>
+      <div class="tags" aria-label="Concepts and principles">
+        <span class="tag">Affirmative model</span><span class="tag">Medical vs. social model</span><span class="tag">Neurodiversity</span>
+        <span class="tag dj">DJ: Recognizing wholeness</span><span class="tag dj">DJ: Leadership of those most impacted</span><span class="tag dj">DJ: Collective access</span>
+      </div>
+    </article>
+
+    <article class="case" id="case-hand" aria-labelledby="c2-h">
+      <div class="case-head">
+        <span class="case-num">Case study 2 · TikTok</span>
+        <span class="verdict v-mixed">Challenges, with a question</span>
+      </div>
+      <h3 id="c2-h">A mechanical prosthetic hand by Ian Davis</h3>
+      <figure>
+        <div class="media-meta"><span class="platform">TikTok</span><span>@gastt_fashion</span><a href="https://www.tiktok.com/@gastt_fashion" target="_blank" rel="noopener">View the account</a></div>
+        <p class="alt"><b>Alt text</b>A close-up of a person's hand wearing a mechanical prosthetic device designed by Ian Davis. The device has four jointed metal fingers attached to a metal frame around the hand and wrist. The hand is palm-up against a gray concrete background.</p>
+        <details>
+          <summary>Detailed image description</summary>
+          <div>
+            <p>The image is a screenshot of a TikTok video demonstrating a mechanical prosthetic hand created by Ian Davis. The device has four metallic, jointed fingers attached to a frame around the person's hand and wrist. The fingers have visible hinges, screws, and metal parts that allow movement.</p>
+            <p>The person's own thumb is visible, and a blue and red wristband is wrapped around their wrist. The hand is palm-up against a gray concrete background.</p>
+            <p>White text near the top of the video reads "Mechanical Prosthetic Hand by Ian Davis." The screenshot also shows TikTok's buttons for likes, comments, sharing, and a search bar.</p>
+          </div>
+        </details>
+        <details>
+          <summary>Audio description</summary>
+          <div><p>The video shows a close-up of a person's hand wearing a mechanical prosthetic device created by Ian Davis. Four silver mechanical fingers extend over the hand, with visible metal joints, hinges, and connecting parts. A metal frame surrounds the wrist and palm. The hand faces upward against a gray concrete background, showing how the device is built.</p></div>
+        </details>
+      </figure>
+      <div class="analysis">
+        <h4>Analysis</h4>
+        <p>The prosthetic hand shows how assistive technology can support access, independence, and bodily autonomy for people with limb differences. The design keeps the wearer's own thumb and builds the device around the hand that exists, adapting technology to one person's body instead of forcing the body to fit a standard part.</p>
+        <p>From a Disability Studies view, the video also points to creativity and to disabled people as active participants in designing their own technology, not just patients who receive it.</p>
+        <p class="ask"><strong>A question to ask:</strong> The video is about the device. We see a hand, but we never hear from the person wearing it. Content like this can slide into a "technology will fix disability" story, which is a high-tech version of the cure narrative. The most useful prosthetics content pairs the engineering with the wearer's own account of what the device does and does not do for them.</p>
+      </div>
+      <div class="tags" aria-label="Concepts and principles">
+        <span class="tag">Assistive technology</span><span class="tag">Bodily autonomy</span><span class="tag">Cure narrative</span>
+        <span class="tag dj">DJ: Interdependence</span><span class="tag dj">DJ: Collective access</span>
+      </div>
+    </article>
+
+    <article class="case" id="case-spidey" aria-labelledby="c3-h">
+      <div class="case-head">
+        <span class="case-num">Case study 3 · TikTok</span>
+        <span class="verdict v-challenge">Challenges ableism</span>
+      </div>
+      <h3 id="c3-h">"Making my Spider-Man prosthetic leg"</h3>
+      <figure>
+        <div class="media-meta"><span class="platform">TikTok</span><span>@alex1leg</span><a href="https://www.tiktok.com/@alex1leg" target="_blank" rel="noopener">View the account</a></div>
+        <p class="alt"><b>Alt text</b>A smiling person with shoulder-length curly black hair, in a maroon shirt and blue jeans, holds up a custom Spider-Man-themed prosthetic leg with a red and black spiderweb design, a black spider emblem, and blue coloring. White text reads "Making my Spider-Man Prosthetic Leg."</p>
+        <details>
+          <summary>Detailed image description</summary>
+          <div>
+            <p>The image is a screenshot of a TikTok video in which creator Alex1Leg shows off a custom Spider-Man-themed prosthetic leg.</p>
+            <p>The person stands indoors in a maroon polo-style shirt and blue jeans. They have shoulder-length curly black hair and smile at the camera while holding up the prosthetic leg.</p>
+            <p>The prosthetic has a red and black Spider-Man web pattern with a large black spider emblem. The lower part has blue fabric, a gray shoe, and visible prosthetic components.</p>
+            <p>In the background are a tall floor lamp, a desk, and personal belongings. White text across the middle reads "Making my Spider-Man Prosthetic Leg." TikTok's buttons for likes, comments, and sharing appear on the right, along with a playlist titled "Build a Leg."</p>
+          </div>
+        </details>
+        <details>
+          <summary>Audio description</summary>
+          <div><p>A smiling person with curly black hair stands indoors holding up a custom prosthetic leg inspired by Spider-Man. The prosthetic is bright red with black spiderweb patterns and a large black spider emblem. Blue fabric covers part of the lower section, and a gray shoe is attached. The person proudly holds the leg toward the camera, showing off its personal design.</p></div>
+        </details>
+      </figure>
+      <div class="analysis">
+        <h4>Analysis</h4>
+        <p>This video treats a prosthetic as something to show off, not hide. Medical design has long tried to make prosthetics look like skin so the disability "disappears." A Spider-Man leg does the opposite. It is personal, fun, and visible.</p>
+        <p>Under the affirmative model, the design celebrates disability identity and challenges negative stereotypes about prosthetic devices. It also shows bodily autonomy: the creator controls how their assistive technology looks. The "Build a Leg" playlist adds an educational layer, letting viewers see the process instead of only the finished product.</p>
+        <p>The creator is not framed as tragic or as inspirational. They are a Spider-Man fan who happens to wear a prosthetic leg, which is the kind of everyday, interest-driven representation our closing section argues for.</p>
+      </div>
+      <div class="tags" aria-label="Concepts and principles">
+        <span class="tag">Affirmative model</span><span class="tag">Disability pride</span><span class="tag">Self-expression</span>
+        <span class="tag dj">DJ: Recognizing wholeness</span><span class="tag dj">DJ: Leadership of those most impacted</span>
+      </div>
+    </article>
+
+    <article class="case" id="case-mills" aria-labelledby="c4-h">
+      <div class="case-head">
+        <span class="case-num">Case study 4 · TikTok</span>
+        <span class="verdict v-challenge">Challenges ableism</span>
+      </div>
+      <h3 id="c4-h">A quad amputee veteran's top 5 life-changing prosthetics</h3>
+      <figure>
+        <div class="media-meta"><span class="platform">TikTok</span><span>Travis Mills (@uuser61020541368283)</span><a href="https://www.tiktok.com/@uuser61020541368283" target="_blank" rel="noopener">View the account</a></div>
+        <p class="alt"><b>Alt text</b>A military veteran with amputations of all four limbs sits in a brown armchair wearing a dark gray T-shirt, light-colored shorts, and two prosthetic legs with black shoes. He gestures while speaking to the camera. Behind him are a large window, wooden wall panels, and a bookshelf. Text above reads "Quad Amputee Veteran Shares His Top 5 Life-Changing Prosthetics P1."</p>
+        <details>
+          <summary>Detailed image description</summary>
+          <div>
+            <p>The image is a screenshot of a social media video in which a military veteran with four limb amputations discusses his five most life-changing prosthetic devices.</p>
+            <p>He sits in a brown leather armchair in a living room, wearing a dark gray T-shirt, light-colored shorts, and two black and gray prosthetic legs with black shoes. His upper limbs have amputations, and a dark prosthetic device is visible on one arm. He faces the camera and gestures as if explaining his experiences with prosthetic technology.</p>
+            <p>The background has wooden wall panels, a large window looking out on green trees, a bookshelf, and a small table holding two drinks. A white text box at the top reads "Quad Amputee Veteran Shares His Top 5 Life-Changing Prosthetics P1." Buttons for liking, commenting, saving, and sharing appear along the right side.</p>
+          </div>
+        </details>
+        <details>
+          <summary>Audio description</summary>
+          <div><p>A military veteran with four limb amputations sits in a brown armchair facing the camera. He wears a dark gray shirt and light-colored shorts. Two mechanical prosthetic legs extend from his thighs to black shoes resting on the floor. He gestures with his upper limbs while speaking. Behind him are a large window, wooden walls, and a bookshelf. The video introduces his discussion of five prosthetic devices that have changed his daily life.</p></div>
+        </details>
+      </figure>
+      <div class="analysis">
+        <h4>Analysis</h4>
+        <p>The video positions Mills as an expert. He is not being explained by a doctor or narrator. He is ranking and reviewing the technology he uses every day, based on his own lived experience and preferences. Under the affirmative model, he is defined by his knowledge, not only by his disability.</p>
+        <p>The social model fits too. Each device he ranks removes a barrier to a specific everyday task, which shifts attention from "what is wrong with his body" to "what tools and environments let him participate."</p>
+        <p class="ask"><strong>A question to ask:</strong> Disabled veterans are often framed as heroes who "overcame" their injuries, and that framing can turn into inspiration porn. This video mostly avoids that by staying practical. It also raises an access question: veterans can get prosthetic care through the VA, while many civilians with limb loss depend on insurance that may cover far less. Whose prosthetic stories get told on social media depends partly on who can afford the devices.</p>
+      </div>
+      <div class="tags" aria-label="Concepts and principles">
+        <span class="tag">Social model</span><span class="tag">Affirmative model</span><span class="tag">Heroism narrative</span>
+        <span class="tag dj">DJ: Leadership of those most impacted</span><span class="tag dj">DJ: Interdependence</span><span class="tag dj">DJ: Anti-capitalist politics</span>
+      </div>
+    </article>
+
+    </div>
+  </div>
+</section>
+
+<section id="ableism" aria-labelledby="ableism-h">
+  <div class="wrap stack">
+    <h2 id="ableism-h">Part 2: Ableism in the feed</h2>
+    <p class="plain"><strong>Plain language summary</strong>These three examples show how people treat disabled people unfairly, online and in daily life. One is a joke that makes fun of a disabled student. Two are disabled creators explaining what unfair treatment feels like.</p>
+    <p>Social media can spread ableism quickly, especially through jokes and memes that get shared without much thought. The same platforms also let disabled people talk back. This section includes one example of each and one that sits in between.</p>
+
+    <div class="cases">
+
+    <article class="case" id="case-casual" aria-labelledby="c5-h">
+      <div class="case-head">
+        <span class="case-num">Case study 5 · Instagram</span>
+        <span class="verdict v-mixed">Exposes ableism</span>
+      </div>
+      <h3 id="c5-h">"It's condescending and infantilizing"</h3>
+      <figure>
+        <div class="media-meta"><span class="platform">Instagram</span><span>@casualableism · October 17, 2024</span><a href="https://www.instagram.com/p/DBO2acgMufN/" target="_blank" rel="noopener">View the post</a></div>
+        <p class="alt"><b>Summary of post</b>A text post sharing a disabled person's experience: because they use a mobility aid, strangers assume they don't know their own abilities and do things for them, even after being told the person can do it themself.</p>
+        <figcaption>The original post includes its own image descriptions.</figcaption>
+      </figure>
+      <div class="analysis">
+        <h4>Analysis</h4>
+        <p>This post gives a first-hand account of how disabled people are infantilized in everyday life. The mobility aid becomes a signal to strangers that the person is helpless. Even when the person says they can do the task, their word is overruled.</p>
+        <p>It shows how society builds a perception of disabled people as "less than." The same mindset produces inspiration porn: if a disabled person is assumed to be incapable, then anything they do becomes "inspiring" or "moving."</p>
+        <p>The post also makes a point about help. Disability Justice values interdependence, meaning everyone relies on others. But help that ignores what the person asked for is not interdependence. It is control.</p>
+      </div>
+      <div class="tags" aria-label="Concepts and principles">
+        <span class="tag">Infantilization</span><span class="tag">Inspiration porn</span>
+        <span class="tag dj">DJ: Interdependence</span><span class="tag dj">DJ: Recognizing wholeness</span>
+      </div>
+    </article>
+
+    <article class="case" id="case-meme" aria-labelledby="c6-h">
+      <div class="case-head">
+        <span class="case-num">Case study 6 · TikTok</span>
+        <span class="verdict v-reinforce">Reinforces ableism</span>
+      </div>
+      <h3 id="c6-h">"POV: You're at the school talent show and the special ed kid performs"</h3>
+      <figure>
+        <div class="media-meta"><span class="platform">TikTok</span><span>AyGabe · 2023</span><a href="https://www.tiktok.com/t/ZPNjAuyEC/" target="_blank" rel="noopener">View the video</a></div>
+        <p class="alt"><b>Alt text</b>A young man sits in a purple theater seat surrounded by empty purple seats, wearing a black Super Mario graphic T-shirt and gray pants. He looks around, closes his eyes, lowers his head, and brings his hand to his mouth. The video cuts to a close-up of another man looking sideways with a surprised expression, then back to the young man, who appears to be reacting emotionally. On-screen text reads "Pov: You're at the school talent show and the special ed kid performs," and the second scene is captioned "His teacher:".</p>
+        <details>
+          <summary>Timed description of the video</summary>
+          <div>
+            <p><span class="timecode">0:00–0:02</span> A young man with short, dark, curly hair sits in a purple theater seat in a black Super Mario T-shirt and gray pants, hands resting together in his lap. He looks to the side with a neutral expression. White outlined text at the top reads: "Pov: You're at the school talent show and the special ed kid performs."</p>
+            <p><span class="timecode">0:02–0:04</span> The camera stays on him. He closes his eyes, lowers his head, and brings one hand toward his mouth, leaning forward slightly.</p>
+            <p><span class="timecode">0:04–0:05</span> Cut to a close-up of another man with short brown hair, facial hair, and a dark shirt. He looks sideways toward the camera with wide eyes and a surprised or concerned expression. Text above him reads "His teacher:".</p>
+            <p><span class="timecode">0:05–0:08</span> Back to the young man in the auditorium. His hand is near his mouth and his eyes are squeezed shut. He moves his hand across his face, still reacting expressively. Purple seats remain visible behind him.</p>
+          </div>
+        </details>
+      </figure>
+      <div class="analysis">
+        <h4>Analysis</h4>
+        <p>This clip is meant to be funny, and the joke depends on disabled students. It shows the prejudice people still hold. Throughout history, disabled people were used as entertainment, from court jesters for the nobility to the freak shows of the 1800s and early 1900s. Times have changed, but this kind of humor shows that the mindset has not fully gone away. It has moved to a new format.</p>
+        <p>The disabled student never appears in the video. He exists only as an imagined performance that nondisabled people react to. That is the same structure Stella Young (2014) criticized in inspiration porn: the disabled person is a prop for someone else's feelings, whether those feelings are pity, laughter, or being moved.</p>
+        <p>The phrase "special ed kid" also turns a school service into a label for a whole person, and the meme format makes the joke easy to copy and share without anyone stopping to think about who it targets.</p>
+      </div>
+      <div class="tags" aria-label="Concepts and principles">
+        <span class="tag">Disability as spectacle</span><span class="tag">Inspiration porn</span><span class="tag">Stereotyping</span>
+        <span class="tag dj">Ignores DJ: Recognizing wholeness</span><span class="tag dj">Ignores DJ: Leadership of those most impacted</span>
+      </div>
+    </article>
+
+    <article class="case" id="case-parking" aria-labelledby="c7-h">
+      <div class="case-head">
+        <span class="case-num">Case study 7 · TikTok</span>
+        <span class="verdict v-challenge">Pushes back</span>
+      </div>
+      <h3 id="c7-h">"Disabled people don't always look it"</h3>
+      <figure>
+        <div class="media-meta"><span class="platform">TikTok</span><span>@biemi86 · 2026</span><a href="https://www.tiktok.com/t/ZPNjAqq4Y/" target="_blank" rel="noopener">View the video</a></div>
+        <p class="alt"><b>Alt text</b>A woman unloads the trunk of a silver SUV parked in an accessible parking space while on-screen text reads "She don't look handicapped to me." The video then cuts to a woman in large glasses and a gray sweatshirt speaking to the camera, explaining that she is disabled even though she can manage her own wheelchair.</p>
+        <details>
+          <summary>Timed description of the video</summary>
+          <div>
+            <p><span class="timecode">0:00–0:03</span> A sunny parking lot. A silver SUV is parked in front of a commercial building with its rear hatch raised. A woman with long brown hair, in a light long-sleeved shirt and bright blue pants, reaches into the trunk. White outlined text near the bottom reads "She don't look handicapped to me." Red text across the middle reads "Response incoming."</p>
+            <p><span class="timecode">0:03–0:07</span> The camera shifts to a nearby sign with the blue wheelchair accessibility symbol marking the space as reserved accessible parking. The SUV remains in the background.</p>
+            <p><span class="timecode">0:07–0:09</span> A brief return to the SUV before a cut.</p>
+            <p><span class="timecode">0:09–0:22</span> A different woman records herself indoors. She has dark hair pulled back, large rectangular glasses, and a gray sweatshirt. Behind her is a shelf with books and decorations. She speaks directly to the camera with emphatic expressions. Large capitalized subtitles run along the bottom with key words in blue. The last subtitle is partly cut off at the left edge.</p>
+            <p><span class="timecode">0:22–0:26</span> She finishes speaking with a more neutral expression. The video ends on a black screen with the TikTok logo and the username @biemi86.</p>
+          </div>
+        </details>
+        <details>
+          <summary>Transcript</summary>
+          <div><p>"I can get my own wheelchair in and out of a car that I drive myself, but trust me, I am disabled. I have a handicap placard and I do need the spot. So quit judging people. You don't know her circumstances."</p></div>
+        </details>
+      </figure>
+      <div class="analysis">
+        <h4>Analysis</h4>
+        <p>The first half of the video repeats a common ableist assumption: disability has to be visible to be real. Many disabilities are not visible, and the public is not owed a look at anyone's medical records. Judging someone by what they can or can't do in a parking lot reflects how society decides what counts as "normal" and treats anything outside that box as suspicious.</p>
+        <p>The second half is a disabled creator answering back. TikTok's response and stitch features let her take a clip that judges a stranger and turn it into a lesson. She also defends someone she does not know and whose disability she cannot see, which is a form of cross-disability solidarity.</p>
+        <p>The video has burned-in captions, which helps Deaf and hard-of-hearing viewers. One caption is cut off at the edge of the frame, a small example of how access features need checking too.</p>
+      </div>
+      <div class="tags" aria-label="Concepts and principles">
+        <span class="tag">Invisible disability</span><span class="tag">Social model</span><span class="tag">Captioning</span>
+        <span class="tag dj">DJ: Cross-disability solidarity</span><span class="tag dj">DJ: Leadership of those most impacted</span>
+      </div>
+    </article>
+
+    </div>
+  </div>
+</section>
+
+<section id="justice" aria-labelledby="justice-h">
+  <div class="wrap stack">
+    <h2 id="justice-h">The Disability Justice framework</h2>
+    <p class="plain"><strong>Plain language summary</strong>Disability Justice is a set of 10 ideas written by disabled activists. It says disabled people should lead, everyone depends on each other, and access should be shared by everyone. We used these ideas to judge each post.</p>
+    <p>Disability Justice was developed by disabled queer and trans activists of color, including the performance project Sins Invalid, who felt the earlier disability rights movement centered mostly white, physically disabled people and focused on legal access. Disability Justice asks for more than laws. It asks for a world built around disabled people's leadership, care, and wholeness. Sins Invalid (2019) lays out ten principles:</p>
+    <ol class="principles">
+      <li><b>Intersectionality</b><span>Disability is shaped by race, gender, sexuality, class, and immigration status. No one experiences it in isolation.</span></li>
+      <li><b>Leadership of those most impacted</b><span>The people living with a disability should lead the conversation about it.</span></li>
+      <li><b>Anti-capitalist politics</b><span>Worth should not depend on how productive a body is, and access should not depend on wealth.</span></li>
+      <li><b>Commitment to cross-movement organizing</b><span>Disability Justice works alongside other justice movements.</span></li>
+      <li><b>Recognizing wholeness</b><span>Disabled people are whole people with full lives, histories, and interests.</span></li>
+      <li><b>Sustainability</b><span>Pace work and activism so bodies are not pushed past their limits.</span></li>
+      <li><b>Commitment to cross-disability solidarity</b><span>Physical, sensory, intellectual, psychiatric, chronic, and invisible disabilities stand together.</span></li>
+      <li><b>Interdependence</b><span>Everyone relies on others. Meeting each other's needs is normal, not a failure of independence.</span></li>
+      <li><b>Collective access</b><span>Access is everyone's responsibility, and it can be creative and shared.</span></li>
+      <li><b>Collective liberation</b><span>No one is left behind. Liberation includes all bodies and minds.</span></li>
+    </ol>
+
+    <h3>How our examples connect</h3>
+    <div class="table-scroll" tabindex="0" role="region" aria-labelledby="map-cap">
+      <table>
+        <caption id="map-cap">Disability Justice principles in each case study</caption>
+        <thead><tr><th scope="col">Case study</th><th scope="col">Principles it reflects</th><th scope="col">Principles it ignores or raises questions about</th></tr></thead>
+        <tbody>
+          <tr><th scope="row"><a href="#case-ocampo">1. Autism essay</a></th><td>Recognizing wholeness; Leadership of those most impacted; Collective access</td><td>None</td></tr>
+          <tr><th scope="row"><a href="#case-hand">2. Prosthetic hand</a></th><td>Collective access; Interdependence</td><td>Leadership of those most impacted (the wearer is never heard)</td></tr>
+          <tr><th scope="row"><a href="#case-spidey">3. Spider-Man leg</a></th><td>Recognizing wholeness; Leadership of those most impacted</td><td>None</td></tr>
+          <tr><th scope="row"><a href="#case-mills">4. Veteran's prosthetics</a></th><td>Leadership of those most impacted; Interdependence</td><td>Anti-capitalist politics (who can afford these devices)</td></tr>
+          <tr><th scope="row"><a href="#case-casual">5. Infantilization post</a></th><td>Recognizing wholeness; Leadership of those most impacted</td><td>Interdependence (help imposed without consent)</td></tr>
+          <tr><th scope="row"><a href="#case-meme">6. Talent show meme</a></th><td>None</td><td>Recognizing wholeness; Leadership of those most impacted</td></tr>
+          <tr><th scope="row"><a href="#case-parking">7. Parking response</a></th><td>Cross-disability solidarity; Leadership of those most impacted</td><td>None</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The pattern is clear. The examples that challenge ableism are almost always made by disabled people speaking for themselves. The example that reinforces ableism is the one where no disabled person speaks at all. Leadership of those most impacted shows up in nearly every row, for or against.</p>
+  </div>
+</section>
+
+<section id="closing" aria-labelledby="closing-h">
+  <div class="wrap stack">
+    <h2 id="closing-h">Closing: What would less ableist social media look like?</h2>
+    <p class="plain"><strong>Plain language summary</strong>Social media can hurt or help disabled people. Better content lets disabled people tell their own stories, shows them as full people, and is accessible to everyone.</p>
+    <p class="lede">After looking at these examples, social media clearly has both positive and negative effects. It can reinforce stereotypes, and it can also challenge them by giving disabled people a platform to share their own experiences in their own way.</p>
+    <p>Less ableist content would let disabled people represent themselves instead of having others speak for them. It would show that disability is one part of someone's identity, and that disabled people have their own interests, personalities, relationships, goals, and experiences.</p>
+    <p>We already see this in the content on this page. The Spider-Man prosthetic leg turns assistive technology into personal expression. The autism essay challenges the idea that a diagnosis means something is wrong or needs to be changed. These examples show that disability representation does not have to focus on struggle or limitation. It can also show identity, independence, community, and creativity.</p>
+    <h3>Less ableist social media should:</h3>
+    <ul class="points">
+      <li>Give disabled people the chance to tell their own stories</li>
+      <li>Show disability in everyday life without turning ordinary activities into inspiration porn</li>
+      <li>Represent many disabilities and experiences, including invisible ones, instead of repeating the same stereotypes</li>
+      <li>Include accessibility features such as captions, image descriptions, audio descriptions, and transcripts</li>
+      <li>Focus on removing barriers and improving access instead of treating the disabled person as the problem</li>
+    </ul>
+    <h3>Connecting to Disability Justice</h3>
+    <p>Each of these goals maps onto a Disability Justice principle. Letting disabled people tell their own stories is leadership of those most impacted. Showing disabled people as full people with hobbies and opinions is recognizing wholeness. Including captions and descriptions is collective access, where every creator shares responsibility for making content reachable. Defending people with disabilities we cannot see, as the parking video does, is cross-disability solidarity. And asking who can afford prosthetics or who gets their story told brings in anti-capitalist politics and intersectionality, since access online follows the same lines of money, race, and class as access offline.</p>
+    <p>Social media can either continue harmful assumptions or create a space where disabled people are respected, included, and heard. Disability content does not need to be about overcoming challenges. Disabled people should be able to share every part of their lives. The goal is not just to include disability in online content, but to represent disabled people accurately and give them room to define their own experiences.</p>
+    <p class="lede">Being respected is important. Being understood and included matters just as much.</p>
+  </div>
+</section>
+
+<section id="access" aria-labelledby="access-h">
+  <div class="wrap stack">
+    <h2 id="access-h">Accessibility statement</h2>
+    <p class="plain"><strong>Plain language summary</strong>We built this page so more people can use it. You can make the text bigger, add space between lines, use a screen reader, and read descriptions of every image and video.</p>
+    <p>A page about disability representation should be accessible itself. We treated access as part of the content, following the Disability Justice idea of collective access. Here is what we built in and why.</p>
+    <ul class="points">
+      <li><strong>Readable typeface.</strong> Body text uses Atkinson Hyperlegible, a font designed by the Braille Institute so similar letters (like I, l, and 1) are easy to tell apart for readers with low vision.</li>
+      <li><strong>Reading options.</strong> The bar at the top lets you enlarge text and widen line spacing. Your choice is remembered in your browser.</li>
+      <li><strong>Image descriptions in layers.</strong> Every example has short alt text. Longer descriptions, audio descriptions, timed video descriptions, and transcripts are in expandable sections, so screen reader users and sighted readers can choose how much detail they want.</li>
+      <li><strong>Plain language summaries.</strong> Each section opens with a short summary in simple words for readers with cognitive or learning disabilities, readers new to these ideas, and readers using translation tools.</li>
+      <li><strong>Clear structure.</strong> Headings follow a logical order, sections are labeled for screen readers, and a "Skip to main content" link appears when you press Tab.</li>
+      <li><strong>Color and contrast.</strong> Text meets high contrast in both light and dark mode. Labels such as "Challenges ableism" use words, not color alone.</li>
+      <li><strong>Keyboard access.</strong> Every link, button, and expandable section works with a keyboard and shows a visible focus outline.</li>
+      <li><strong>Reduced motion.</strong> The page has no autoplaying media or flashing content, and smooth scrolling turns off if your device asks for reduced motion.</li>
+      <li><strong>No embedded players.</strong> We link to original posts instead of embedding them, so autoplaying video and sound do not start without your choice. The descriptions on this page let you follow each example without opening the original.</li>
+    </ul>
+    <p>Many of these ideas come from the author of our first case study, whose accessibility plan for their essay included screen-reader compatibility, alt text, adjustable font sizes, text-to-speech, high-contrast text, a plain-language summary, and a distraction-free reading option.</p>
+  </div>
+</section>
+
+<section id="refs" aria-labelledby="refs-h">
+  <div class="wrap stack">
+    <h2 id="refs-h">References</h2>
+    <ol class="refs">
+      <li>Alex1Leg [@alex1leg]. (n.d.). <i>Home</i> [TikTok profile]. TikTok. Retrieved November 11, 2026, from https://www.tiktok.com/@alex1leg</li>
+      <li>AyGabe. (2023). <i>Just lost my spot in heaven</i> [Video]. TikTok. https://www.tiktok.com/t/ZPNjAuyEC/</li>
+      <li>Biemi [@biemi86]. (2026). <i>#disabled people don't always look it. stop w the #judgement</i> [Video]. TikTok. https://www.tiktok.com/t/ZPNjAqq4Y/</li>
+      <li>casualableism. (2024, October 17). <i>I use a mobility aid and people will assume I don't know what I can do and do things for me even after I say I can do them. It's condescending and infantilizing</i> [Post]. Instagram. https://www.instagram.com/p/DBO2acgMufN/</li>
+      <li>gastt fashion [@gastt_fashion]. (n.d.). <i>Home</i> [TikTok profile]. TikTok. Retrieved November 11, 2026, from https://www.tiktok.com/@gastt_fashion</li>
+      <li>Murza, K. (2025). Imagine true inclusion: What is the social model of disability? And how does it differ from the medical model in playing to strengths and affirming neurodiversity? <i>ASHA Leader, 30</i>(1), 34–37.</li>
+      <li>Ocampo, C. (n.d.). Essay: My autism diagnosis is not a problem to be solved. <i>The Shorthorn</i>. https://www.theshorthorn.com/opinion/community/essay-my-autism-diagnosis-is-not-a-problem-to-be-solved/article_2cda60ec-f464-4efb-b24d-9e2c41b5b2f5.html</li>
+      <li>Parey, B., Enightoola, H., Kutscher, E., Varachhia, S., &amp; Leblanc, R. G. (2025). Wellbeing and agency among relatives of persons with lower-limb amputations in Trinidad and Tobago: Considering Sen's capability approach, ethics of care framework and social model of disability and wellbeing. <i>Health &amp; Social Care in the Community, 2025</i>, 1–11. https://doi.org/10.1155/hsc/6282676</li>
+      <li>Sins Invalid. (2019). <i>Skin, tooth, and bone: The basis of movement is our people</i> (2nd ed.). Sins Invalid.</li>
+      <li>Swain, J., &amp; French, S. (2000). Towards an affirmation model of disability. <i>Disability &amp; Society, 15</i>(4), 569–582. https://doi.org/10.1080/09687590050058189</li>
+      <li>uuser61020541368283 [@uuser61020541368283]. (n.d.). <i>Home</i> [TikTok profile]. TikTok. Retrieved November 11, 2026, from https://www.tiktok.com/@uuser61020541368283</li>
+      <li>Young, S. (2014, April). <i>I'm not your inspiration, thank you very much</i> [Video]. TED. https://www.ted.com/talks/stella_young_i_m_not_your_inspiration_thank_you_very_much</li>
+    </ol>
+  </div>
+</section>
+
+<section id="credits" aria-labelledby="credits-h">
+  <div class="wrap stack">
+    <h2 id="credits-h">Who made this</h2>
+    <div class="credits">
+      <div><b>Lizeth Herrejon</b><span>Introduction and closing section</span></div>
+      <div><b>Krystal Caiza</b><span>Part 2 case studies (5–7)</span></div>
+      <div><b>[Group member]</b><span>Part 1 case studies (1–4)</span></div>
+      <div><b>[Group member]</b><span>Disability Justice framework, accessibility, and site build</span></div>
+    </div>
+    <a class="top" href="#top">Back to top</a>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap"><p>A group project examining depictions of disability in social media. All posts are linked to their original creators.</p></div>
+</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var sizeBtns = document.querySelectorAll('.reading [data-size]');
+  var spacingBtn = document.getElementById('spacing');
+  function load(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function save(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function setSize(s) {
+    if (s === 'md') root.removeAttribute('data-size'); else root.setAttribute('data-size', s);
+    sizeBtns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.size === s)); });
+    save('ddw-size', s);
+  }
+  function setSpacing(on) {
+    if (on) root.setAttribute('data-spacing', 'wide'); else root.removeAttribute('data-spacing');
+    spacingBtn.setAttribute('aria-pressed', String(on));
+    save('ddw-spacing', on ? '1' : '0');
+  }
+  sizeBtns.forEach(function (b) { b.addEventListener('click', function () { setSize(b.dataset.size); }); });
+  spacingBtn.addEventListener('click', function () { setSpacing(spacingBtn.getAttribute('aria-pressed') !== 'true'); });
+  var s = load('ddw-size'); if (s === 'lg' || s === 'xl') setSize(s);
+  if (load('ddw-spacing') === '1') setSpacing(true);
+})();
+</script>
+
+</body>
+</html>
